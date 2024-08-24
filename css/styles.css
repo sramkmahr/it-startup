@@ -12,27 +12,54 @@ body {
     margin: 0 auto;
 }
 
-.header, .footer {
+.header {
     background: #333;
     color: #fff;
     padding: 10px 0;
+    position: relative;
 }
 
-.header nav ul, .footer nav ul {
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+}
+
+.nav-menu ul {
     list-style: none;
     padding: 0;
+    display: flex;
 }
 
-.header nav ul li, .footer nav ul li {
-    display: inline;
-    margin-right: 10px;
+.nav-menu ul li {
+    margin-left: 20px;
 }
 
-.header nav a, .footer nav a {
+.nav-menu a {
     color: #fff;
     text-decoration: none;
+    padding: 5px 10px;
+    display: block;
 }
 
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+}
+
+.menu-toggle .bar {
+    background: #fff;
+    height: 3px;
+    width: 25px;
+    margin: 5px;
+}
+
+/* Hero Section */
 .hero {
     position: relative;
     text-align: center;
@@ -56,12 +83,9 @@ body {
     margin: 0;
 }
 
-.btn {
-    background: #333;
-    color: #fff;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
+/* Content Section */
+.content {
+    padding: 20px 0;
 }
 
 .service {
@@ -76,4 +100,42 @@ body {
 .about-image {
     width: 100%;
     height: auto;
+}
+
+/* Footer */
+footer {
+    background: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .nav-menu ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background: #333;
+        width: 200px;
+    }
+
+    .nav-menu ul li {
+        margin: 0;
+        border-bottom: 1px solid #444;
+    }
+
+    .nav-menu ul li a {
+        padding: 10px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-menu.active ul {
+        display: flex;
+    }
 }
