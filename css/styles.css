@@ -139,3 +139,26 @@ footer {
         display: flex;
     }
 }
+/* Diwali Hero Section */
+.diwali-hero {
+    position: relative;
+    text-align: center;
+    background-image: url('../images/diwali-background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+}
+
+.diwali-hero .hero-text {
+    color: #ffd700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.diwali-hero h1 {
+    font-size: 4em;
+    margin: 0;
+}
+
+.diwali-hero p {
+    font-size: 1.5em;
+}
