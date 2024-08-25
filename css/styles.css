@@ -147,10 +147,7 @@ footer {
     background-size: cover;
     background-position: center;
     height: 400px;
-}
-
-.diwali-hero .hero-text {
-    color: #ffd700;
+    color: #ffd700; /* Festive gold color */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
@@ -161,4 +158,14 @@ footer {
 
 .diwali-hero p {
     font-size: 1.5em;
+    margin: 20px 0;
+}
+
+.diwali-hero .btn {
+    background-color: #ff4500; /* Festive orange-red */
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2em;
 }
