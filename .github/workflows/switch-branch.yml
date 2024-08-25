@@ -1,0 +1,50 @@
+name: Switch GitHub Pages Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      target-branch:
+        description: 'Branch to set for GitHub Pages'
+        required: true
+        default: 'main'
+  schedule:
+    - cron: "*/15 * * * *"  
+    # - cron: "0 0 01 NOV *"  
+
+jobs:
+  switch-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Switch GitHub Pages Branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Determine the target branch
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            target_branch="${{ github.event.inputs.target-branch }}"
+          elif [ "${{ github.event_name }}" == "schedule" ]; then
+            date=$(date +%m%d) # Get the current month and day as MMDD
+            if [ "$date" == "0815" ]; then
+              target_branch="diwali-version"
+            elif [ "$date" == "1101" ]; then
+              target_branch="main"
+            else
+              echo "No scheduled switch needed."
+              exit 0
+            fi
+          else
+            echo "Unsupported event: ${{ github.event_name }}"
+            exit 1
+          fi
+
+          echo "Switching GitHub Pages to $target_branch"
+
+          # Use GitHub API to switch the Pages branch
+          curl -X PATCH \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d '{"source":{"branch":"'"$target_branch"'"}}' \
+            https://api.github.com/repos/${{ github.repository }}/pages
