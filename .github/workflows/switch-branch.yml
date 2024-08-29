@@ -7,7 +7,7 @@ on:
         description: 'Branch to set for GitHub Pages'
         required: true
         default: 'main'
-  schedule:
+  # schedule:
     # - cron: "*/15 * * * *"  
     # - cron: "0 0 01 NOV *"  
 
