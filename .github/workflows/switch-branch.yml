@@ -47,4 +47,4 @@ jobs:
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             -d '{"source":{"branch":"'"$target_branch"'"}}' \
-            https://api.github.com/repos/${{ github.repository }}/pages
+            https://api.github.com/repos/${{ github.repository }}
