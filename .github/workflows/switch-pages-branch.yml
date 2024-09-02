@@ -8,8 +8,7 @@ on:
         required: true
         default: 'main'
   schedule:
-    # - cron: "*/15 * * * *"  
-    # - cron: "0 0 01 NOV *"  
+    - cron: "*/15 * * * *"  
 
 jobs:
   switch-branch:
@@ -18,26 +17,19 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
-      - name: Switch GitHub Pages Branch
+      - name: Determine target branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Determine the target branch
+          # Determine the target branch based on the event type
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             target_branch="${{ github.event.inputs.target-branch }}"
           elif [ "${{ github.event_name }}" == "schedule" ]; then
-            date=$(date +%m%d) # Get the current month and day as MMDD
-            if [ "$date" == "0815" ]; then
+            if [ "$(date +%s) % 1800" -lt 900 ]; then
               target_branch="diwali-version"
-            elif [ "$date" == "1101" ]; then
-              target_branch="main"
             else
-              echo "No scheduled switch needed."
-              exit 0
+              target_branch="main"
             fi
-          else
-            echo "Unsupported event: ${{ github.event_name }}"
-            exit 1
           fi
 
           echo "Switching GitHub Pages to $target_branch"
