@@ -31,4 +31,4 @@ jobs:
           touch .nojekyll
           git add .nojekyll
           git commit -m "Trigger GitHub Pages rebuild"
-          git push https://$MY_GITHUB_TOKEN@github.com/sramkamhr/it-startup.git HEAD:${{ github.event.inputs.target-branch }}
+          git push https://$MY_GITHUB_TOKEN@github.com/sramkmahr/it-startup.git HEAD:${{ github.event.inputs.target-branch }}
