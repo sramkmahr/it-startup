@@ -24,11 +24,12 @@ jobs:
 
       - name: Trigger GitHub Pages Build
         env:
-          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          GIT_ASKPASS: /bin/echo
+          GIT_PASSWORD: ${{ secrets.MY_GITHUB_TOKEN }}
         run: |
           echo "Switching to ${{ github.event.inputs.target-branch }} branch and triggering GitHub Pages rebuild."
           # Optionally touch a .nojekyll file to force a rebuild
           touch .nojekyll
           git add .nojekyll
           git commit -m "Trigger GitHub Pages rebuild"
-          git push https://$MY_GITHUB_TOKEN@github.com/sramkmahr/it-startup.git HEAD:${{ github.event.inputs.target-branch }}
+          git push https://$GIT_PASSWORD@github.com/sramkmahr/it-startup.git HEAD:${{ github.event.inputs.target-branch }}
