@@ -7,36 +7,21 @@ on:
         description: 'Branch to set for GitHub Pages'
         required: true
         default: 'main'
-  # schedule:
-  #   - cron: "*/15 * * * *"  
 
 jobs:
   switch-branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
+      - name: Checkout the target branch
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.target-branch }}
 
-      - name: Determine target branch
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Trigger GitHub Pages Build
         run: |
-          # Determine the target branch based on the event type
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            target_branch="${{ github.event.inputs.target-branch }}"
-          elif [ "${{ github.event_name }}" == "schedule" ]; then
-            if [ "$(date +%s) % 1800" -lt 900 ]; then
-              target_branch="diwali-version"
-            else
-              target_branch="main"
-            fi
-          fi
-
-          echo "Switching GitHub Pages to $target_branch"
-
-          # Use GitHub API to switch the Pages branch
-          curl -X PATCH \
-            -H "Authorization: token ${{secrets.MY_GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            -d '{"source":{"branch":"'"$target_branch"'"}}' \
-            https://api.github.com/repos/sramkmahr/it-startup/pages
+          echo "Switching to ${{ github.event.inputs.target-branch }} branch and triggering GitHub Pages rebuild."
+          # use a .nojekyll file to force a rebuild
+          touch .nojekyll
+          git add .nojekyll
+          git commit -m "Trigger GitHub Pages rebuild"
+          git push origin ${{ github.event.inputs.target-branch }}
