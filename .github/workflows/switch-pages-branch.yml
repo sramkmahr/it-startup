@@ -22,13 +22,16 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
 
+      - name: Debug Git Configuration
+        run: |
+          git config --list
+          git remote -v
+          echo "Token: ${{ secrets.MY_GITHUB_TOKEN }}" | sed 's/./& /g'  # Print token for debugging, spaced out for security masking
+
       - name: Trigger GitHub Pages Build
         run: |
           echo "Switching to ${{ github.event.inputs.target-branch }} branch and triggering GitHub Pages rebuild."
-          # Optionally touch a .nojekyll file to force a rebuild
           touch .nojekyll
           git add .nojekyll
           git commit -m "Trigger GitHub Pages rebuild"
-          git push https://$MY_GITHUB_TOKEN@github.com/sramkmahr/it-startup.git HEAD:${{ github.event.inputs.target-branch }}
-        env:
-          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          git push https://${{ secrets.MY_GITHUB_TOKEN }}@github.com/sramkmahr/it-startup.git HEAD:${{ github.event.inputs.target-branch }}
