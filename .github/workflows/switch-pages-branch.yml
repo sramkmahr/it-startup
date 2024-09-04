@@ -1,28 +1,28 @@
-name: Switch GitHub Pages Branch
+name: GitHub Pages Deployment
 
 on:
   workflow_dispatch:
     inputs:
       target-branch:
-        description: 'Branch to set for GitHub Pages'
+        description: 'Branch to deploy for GitHub Pages'
         required: true
         default: 'main'
 
 jobs:
-  switch-branch:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Switch GitHub Pages Branch via API
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-        run: |
-          echo "Switching GitHub Pages to ${{ github.event.inputs.target-branch }} branch"
-          
-          # Make the API call to switch the Pages branch
-          curl -X PATCH \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/sramkmahr/it-startup/pages \
-            -d '{"source":{"branch":"'"${{ github.event.inputs.target-branch }}"'","path":"/"}}'
-          
-          echo "GitHub Pages is now set to ${{ github.event.inputs.target-branch }} branch."
+      - name: Checkout the target branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.target-branch }}
+
+      - name: Upload artifact to GitHub Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./  
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
